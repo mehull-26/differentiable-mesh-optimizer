@@ -172,7 +172,7 @@ Users requested ability to reconstruct textured meshes, not just geometry.
 
 ### Bug Reports
 
-Submit bug reports via [GitHub Issues](https://github.com/yourusername/3d-reconstruction/issues).
+Submit bug reports via [GitHub Issues](https://github.com/mehull-26/differentiable-mesh-optimizer/issues).
 
 Include:
 - Clear title and description
@@ -183,7 +183,7 @@ Include:
 
 ### Feature Requests
 
-Submit feature requests via [GitHub Issues](https://github.com/yourusername/3d-reconstruction/issues).
+Submit feature requests via [GitHub Issues](https://github.com/mehull-26/differentiable-mesh-optimizer/issues).
 
 Include:
 - Clear use case
@@ -238,8 +238,8 @@ Significant contributors may be invited as maintainers.
 
 ## Questions?
 
-- **General questions**: [GitHub Discussions](https://github.com/yourusername/3d-reconstruction/discussions)
-- **Bug reports**: [GitHub Issues](https://github.com/yourusername/3d-reconstruction/issues)
+  - **General questions**: [GitHub Discussions](https://github.com/mehull-26/differentiable-mesh-optimizer/discussions)
+- **Bug reports**: [GitHub Issues](https://github.com/mehull-26/differentiable-mesh-optimizer/issues)
 - **Email**: mehulyadav2605@gmail.com
 
 Thank you for contributing! 🎉
