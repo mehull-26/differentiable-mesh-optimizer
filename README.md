@@ -190,18 +190,6 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@software{3d_reconstruction_inverse_rendering,
-  title = {3D Model Reconstruction via Inverse Rendering},
-  author = {Your Name},
-  year = {2025},
-  url = {https://github.com/yourusername/3d-reconstruction}
-}
-```
 
 ## Acknowledgments
 
