@@ -230,7 +230,7 @@ Areas where contributions are especially welcome:
 
 Contributors will be:
 
-- Listed in README.md acknowledgments
+- Listed in README.md acknowledgements
 - Credited in CHANGELOG.md
 - Mentioned in release notes
 
@@ -240,6 +240,6 @@ Significant contributors may be invited as maintainers.
 
 - **General questions**: [GitHub Discussions](https://github.com/yourusername/3d-reconstruction/discussions)
 - **Bug reports**: [GitHub Issues](https://github.com/yourusername/3d-reconstruction/issues)
-- **Email**: your.email@example.com
+- **Email**: mehulyadav2605@gmail.com
 
 Thank you for contributing! 🎉
