@@ -1,0 +1,19 @@
+# Core Dependencies
+torch>=2.0.0
+torchvision>=0.15.0
+pytorch3d>=0.7.5
+
+# Utilities
+numpy>=1.24.0
+pyyaml>=6.0
+matplotlib>=3.7.0
+pillow>=9.5.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Optional: For CUDA acceleration
+# Install PyTorch with CUDA from https://pytorch.org/get-started/locally/
+# For Windows: ensure Visual Studio Build Tools are installed for PyTorch3D
+

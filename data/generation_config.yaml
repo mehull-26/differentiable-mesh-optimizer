@@ -1,0 +1,178 @@
+# =============================================================================
+# TEST CASE GENERATION CONFIGURATION
+# =============================================================================
+# This file controls the generation of synthetic test cases for 3D reconstruction.
+# Each test case includes:
+#   - Ground truth mesh (deformed sphere)
+#   - Target images rendered from multiple camera views
+#   - Camera configuration (positions, angles)
+#   - Metadata (test case info, difficulty)
+#
+# Usage: python -m data.generate_targets
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# RENDERING SETTINGS
+# -----------------------------------------------------------------------------
+rendering:
+  image_size: 256  # Resolution of rendered target images (256x256 pixels)
+  num_views: 16    # Number of camera viewpoints per test case
+  
+  # Target types to generate:
+  #   "hard": Binary silhouettes (sharp edges, no blur) - uses ClassicRenderer
+  #   "soft": Soft silhouettes (smooth gradients) - uses DifferentiableRenderer
+  target_types:
+    - hard
+    - soft
+  
+  # Blur radius for soft targets (0.001-0.1)
+  # Smaller = sharper edges, Larger = more blur/smoother gradients
+  blur_radius_soft: 0.01
+
+# -----------------------------------------------------------------------------
+# CAMERA CONFIGURATION
+# -----------------------------------------------------------------------------
+camera:
+  # Field of view in degrees (typical: 45-90)
+  fov: 60.0
+  
+  # Camera distance from origin (world units)
+  distance: 3.0
+  distance_range: [2.5, 3.5]  # Range for random distance (not currently used)
+  
+  # --- AZIMUTH (Horizontal Rotation) ---
+  # Controls how cameras rotate around the object horizontally
+  azimuth_mode: uniform  # Options: uniform, random
+  azimuth_range: [0, 360]  # Full 360° rotation
+  
+  # --- ELEVATION (Vertical Angle) ---
+  # Controls the vertical viewing angle (up/down)
+  # Positive = looking down from above, Negative = looking up from below
+  elevation_mode: uniform  # Options: uniform, fixed, mixed
+    # uniform: Evenly distribute cameras from bottom to top (recommended)
+    # fixed: All cameras at same elevation angle
+    # mixed: Varied pattern (for legacy compatibility)
+  
+  elevation: 30.0  # Fixed elevation angle (degrees) - used only if mode=fixed
+  elevation_range: [-75, 75]  # Range for uniform distribution
+    # -75 to +75 ensures complete spherical coverage:
+    #   -75° to -45°: Bottom views (south pole region)
+    #   -45° to  +0°: Lower hemisphere
+    #    +0° to +45°: Upper hemisphere  
+    #   +45° to +75°: Top views (north pole region)
+
+# -----------------------------------------------------------------------------
+# MESH SETTINGS
+# -----------------------------------------------------------------------------
+mesh:
+  # Subdivision level for icosphere mesh
+  # Level 0: 12 vertices, 20 faces
+  # Level 1: 42 vertices, 80 faces
+  # Level 2: 162 vertices, 320 faces (recommended for testing)
+  # Level 3: 642 vertices, 1280 faces
+  # Level 4: 2562 vertices, 5120 faces
+  subdivision_level: 2
+
+# -----------------------------------------------------------------------------
+# OUTPUT SETTINGS
+# -----------------------------------------------------------------------------
+output:
+  save_ground_truth_obj: true  # Save ground truth mesh as .obj file
+  save_camera_config: true     # Save camera parameters as JSON
+  save_metadata: true          # Save test case metadata
+  create_visualization: true   # Create composite visualization image
+
+# -----------------------------------------------------------------------------
+# DEVICE SETTINGS
+# -----------------------------------------------------------------------------
+device:
+  type: auto  # Options: auto (use GPU if available), cuda, cpu
+  cuda_device: 0  # GPU device ID (if multiple GPUs)
+
+# -----------------------------------------------------------------------------
+# ADVANCED SETTINGS
+# -----------------------------------------------------------------------------
+advanced:
+  antialiasing: false  # Anti-aliasing for rendering (not yet implemented)
+  background_color: [0, 0, 0]  # RGB background color (black)
+  random_seed: 42  # Random seed for reproducibility
+
+# -----------------------------------------------------------------------------
+# TEST CASE DEFINITIONS
+# -----------------------------------------------------------------------------
+# Each test case specifies a deformation to apply to a sphere
+test_cases:
+test_cases:
+  # ---------------------------------------------------------------------------
+  # TEST CASE A: Sphere → Ellipsoid (EASY)
+  # ---------------------------------------------------------------------------
+  # Difficulty: Easy
+  # Deformation: Uniform stretch along axes
+  # Challenge: Learn simple axis-aligned scaling
+  # Expected outcome: Should converge quickly with low error
+  test_case_a:
+    description: Sphere to Ellipsoid (Easy - uniform stretch)
+    difficulty: easy
+    deformation:
+      type: ellipsoid
+      params:
+        scale: [1.5, 1.0, 0.8]  # Stretch X, normal Y, compress Z
+
+  # ---------------------------------------------------------------------------
+  # TEST CASE B: Sphere → Bump (MEDIUM)
+  # ---------------------------------------------------------------------------
+  # Difficulty: Medium
+  # Deformation: Local deformation (bump on one side)
+  # Challenge: Learn asymmetric, localized deformation
+  # Expected outcome: Moderate convergence, requires more iterations
+  test_case_b:
+    description: Sphere to Bump (Medium - local deformation)
+    difficulty: medium
+    deformation:
+      type: bump
+      params:
+        center: [0.5, 0.0, 0.0]  # Bump center location
+        radius: 0.5              # Bump radius
+        height: 0.3              # Bump height/amplitude
+
+  # ---------------------------------------------------------------------------
+  # TEST CASE C: Sphere → Cube (VERY HARD)
+  # ---------------------------------------------------------------------------
+  # Difficulty: Very Hard
+  # Deformation: Sphere projected onto cube surface
+  # Challenge: Create 6 flat faces, 12 sharp edges, 8 corners from smooth sphere
+  # Expected outcome: Approximate solution only - mesh smoothness prevents
+  #                   perfect cube formation. Tests limits of optimization.
+  test_case_c:
+    description: Sphere to Cube (Very Hard - sharp edges and flat faces)
+    difficulty: hard
+    deformation:
+      type: cube
+      params:
+        size: 1.0  # Cube edge length
+
+# =============================================================================
+# DEFORMATION TYPES REFERENCE
+# =============================================================================
+# Available deformation types and their parameters:
+#
+# 1. ellipsoid:
+#      params:
+#        scale: [x, y, z]  # Scaling factor per axis (1.0 = no change)
+#
+# 2. bump:
+#      params:
+#        center: [x, y, z]  # Bump center position
+#        radius: float      # Bump radius
+#        height: float      # Bump amplitude/height
+#
+# 3. twist:
+#      params:
+#        angle: float       # Twist angle in radians
+#        axis: [x, y, z]    # Twist axis (typically [0, 1, 0] for Y-axis)
+#
+# 4. cube:
+#      params:
+#        size: float        # Cube edge length
+#
+# =============================================================================

@@ -1,0 +1,105 @@
+# Configuration for 3D Model Reconstruction
+# This file controls all aspects of the optimization pipeline
+
+# Test case selection
+# Available test cases:
+#   test_case_a: Sphere → Ellipsoid (Easy - uniform stretching, symmetric)
+#   test_case_b: Sphere → Bump (Medium - local deformation, asymmetric)
+#   test_case_c: Sphere → Complex (Hard - multiple deformations, high detail)
+test_case: "test_case_c"
+
+# Mesh configuration
+mesh:
+  subdivision_level: 2  # Icosphere subdivisions (0=12 verts, 1=42 verts, 2=162 verts, 3=642 verts)
+  initial_type: "sphere"  # Options: sphere, ellipsoid [NOT IMPLEMENTED YET], custom [NOT IMPLEMENTED YET]
+
+# Optimization settings
+optimization:
+  num_iterations: 500  # Total optimization steps
+  learning_rate: 0.01  # Step size for gradient descent (0.001-0.1 typical)
+  optimizer: "adam"  # Options: adam (recommended), sgd
+  
+  # Learning rate scheduling [NOT IMPLEMENTED YET]
+  use_scheduler: false
+  scheduler_type: "step"  # Options: step, exponential, cosine [NOT IMPLEMENTED YET]
+  scheduler_gamma: 0.5  # Decay factor [NOT IMPLEMENTED YET]
+  scheduler_step_size: 200  # Decay every N iterations [NOT IMPLEMENTED YET]
+
+# Loss function weights
+losses:
+  silhouette_weight: 1.0  # Data term - matches target silhouette
+  edge_weight: 0.1  # Regularization - prevents edge stretching
+  laplacian_weight: 0.1  # Regularization - smoothness (increase for high subdivision)
+  normal_weight: 0.01  # Regularization - normal consistency
+  
+  # Adaptive regularization - scales regularization with mesh complexity
+  # When enabled, regularization weights increase for higher subdivision levels
+  adaptive_regularization: true
+  
+  # Loss type for silhouette
+  silhouette_type: "mse"  # Options: mse (L2), bce (binary cross-entropy) - BOTH IMPLEMENTED
+
+# Rendering settings
+rendering:
+  image_size: 256  # Resolution (64, 128, 256, 512)
+  blur_radius: 0.01  # Blur for soft differentiable rendering (0.001 = less blur/sharper, 0.01 = more blur/smoother gradients)
+  target_rendering_mode: "both"  # Options: "soft", "hard", "both"
+                                  # Controls which target types to use for optimization
+                                  # "soft": Use soft-rendered targets from targets_soft/ (blurred, differentiable)
+                                  # "hard": Use hard-rendered targets from targets_hard/ (clean binary, classic rasterization)
+                                  # "both": Run separate optimizations for each
+                                  # "both": Run separate optimizations for each
+
+# NOTE: Camera settings are loaded from test case data (camera_config.json)
+# To configure cameras for test case generation, edit data/generation_config.yaml
+
+# Visualization and logging
+visualization:
+  log_every: 50  # Print progress every N iterations
+  save_checkpoint_every: 100  # Save mesh checkpoint every N iterations or percentage
+  checkpoint_mode: "iteration"  # Options: "percentage" (0-100) or "iteration" (every N iterations)
+  save_checkpoint_renders: true  # Save multi-angle renders at checkpoints
+  checkpoint_render_views: 4  # Number of viewing angles (evenly spaced)
+  save_video: true  # Create optimization animation
+  video_fps: 10  # Frames per second for video
+  plot_loss_curves: true  # Generate loss plots
+  create_comparison: true  # Create before/after comparison
+  verbose: true  # Control detailed console output (true for full logs, false for minimal)
+
+# Output settings
+output:
+  base_dir: "results"  # Base directory for results
+  experiment_name: "default"  # Experiment name (auto-generated if null)
+  save_intermediate: true  # Save intermediate meshes
+  save_history: true  # Save optimization history JSON
+  
+# Device settings
+device:
+  type: "cuda"  # Options: auto, cpu, cuda
+  cuda_device: 0  # GPU device ID if using CUDA
+
+# Advanced options
+advanced:
+  # Gradient clipping (prevents exploding gradients) [NOT IMPLEMENTED YET]
+  use_grad_clip: false
+  grad_clip_value: 1.0  # [NOT IMPLEMENTED YET]
+  
+  # Early stopping [NOT IMPLEMENTED YET]
+  use_early_stopping: false
+  early_stop_patience: 50  # Stop if no improvement for N iterations [NOT IMPLEMENTED YET]
+  early_stop_threshold: 1e-6  # Minimum improvement threshold [NOT IMPLEMENTED YET]
+  
+  # Random seed for reproducibility
+  random_seed: 42
+  
+  # Mesh vertex bounds (prevent mesh from exploding)
+  use_vertex_bounds: true
+  vertex_bound_min: -5.0
+  vertex_bound_max: 5.0
+
+# Evaluation metrics
+evaluation:
+  compute_chamfer: true  # Chamfer distance to ground truth
+  compute_normal_consistency: true  # Normal consistency metric
+  compute_edge_length_variance: true  # Edge length variance
+  save_evaluation_report: true  # Save detailed evaluation report

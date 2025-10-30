@@ -1,0 +1,25 @@
+{
+  "test_case": "test_case_a",
+  "name": "Sphere to Ellipsoid (Easy - uniform stretch)",
+  "difficulty": "easy",
+  "ground_truth_mesh": "data\\test_cases\\test_case_a\\ground_truth.obj",
+  "initial_mesh": "data\\test_cases\\test_case_a\\initial.obj",
+  "camera_config": "data\\test_cases\\test_case_a\\camera_config.json",
+  "num_views": 16,
+  "image_size": 256,
+  "subdivision_level": 2,
+  "target_types_available": [
+    "hard",
+    "soft"
+  ],
+  "deformation": {
+    "params": {
+      "scale": [
+        1.5,
+        1.0,
+        0.8
+      ]
+    },
+    "type": "ellipsoid"
+  }
+}

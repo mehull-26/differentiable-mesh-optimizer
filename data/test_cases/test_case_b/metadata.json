@@ -1,0 +1,27 @@
+{
+  "test_case": "test_case_b",
+  "name": "Sphere to Bump (Medium - local deformation)",
+  "difficulty": "medium",
+  "ground_truth_mesh": "data\\test_cases\\test_case_b\\ground_truth.obj",
+  "initial_mesh": "data\\test_cases\\test_case_b\\initial.obj",
+  "camera_config": "data\\test_cases\\test_case_b\\camera_config.json",
+  "num_views": 16,
+  "image_size": 256,
+  "subdivision_level": 2,
+  "target_types_available": [
+    "hard",
+    "soft"
+  ],
+  "deformation": {
+    "params": {
+      "center": [
+        0.5,
+        0.0,
+        0.0
+      ],
+      "height": 0.3,
+      "radius": 0.5
+    },
+    "type": "bump"
+  }
+}

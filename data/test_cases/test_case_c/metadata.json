@@ -1,0 +1,21 @@
+{
+  "test_case": "test_case_c",
+  "name": "Sphere to Cube (Very Hard - sharp edges and flat faces)",
+  "difficulty": "hard",
+  "ground_truth_mesh": "data\\test_cases\\test_case_c\\ground_truth.obj",
+  "initial_mesh": "data\\test_cases\\test_case_c\\initial.obj",
+  "camera_config": "data\\test_cases\\test_case_c\\camera_config.json",
+  "num_views": 16,
+  "image_size": 256,
+  "subdivision_level": 2,
+  "target_types_available": [
+    "hard",
+    "soft"
+  ],
+  "deformation": {
+    "params": {
+      "size": 1.0
+    },
+    "type": "cube"
+  }
+}
