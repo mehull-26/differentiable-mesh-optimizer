@@ -74,6 +74,11 @@ Results are saved to `results/[experiment_name]/`:
 - `evaluation_report.json` - Quantitative metrics
 - `checkpoint_renders/` - Multi-view renderings
 
+**Example of sphere optimized to ellipsopid:**
+
+<img width="1762" height="306" alt="image" src="https://github.com/user-attachments/assets/24b579b4-529d-43c9-923f-8faf0c1d1bb7" />
+
+
 ## Documentation
 
 Detailed guides are available in the `docs/` directory:
